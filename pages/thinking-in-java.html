@@ -1,0 +1,65 @@
+---
+layout: main
+title: "Leetcode Solutions"
+permalink: /thinking-in-java.html
+---
+
+<sript>
+<!-- leetcode css only in leetcode.html -->
+<link href="{{ site.baseurl }}/assets/css/leetcode.css" rel="stylesheet">
+</sript>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th><h3>{% increment counter %}</h3></th>
+                  <th><h3>Link</h3></th>
+                  <th><h3>Difficuty</h3></th>
+                  <th><h3>Status</h3></th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% for post in site.posts %}
+                    {% if post.categories != nil %}
+                        {% for category in post.categories %}
+                            {% if category == 'thinking in java' %}
+                                <tr>
+                                  <th class="col-md-1 col-sm-1" scope="row">{% increment counter %}</th>
+                                  <th class="col-md-7 col-sm-11"><a class="leetcode-post-title" href="{{ post.url }}">{{ post.title }}</a></th>
+                                  {% if post.level != nil %}
+                                      {% for lev in post.level %}
+                                          {% if lev == "easy" %}
+                                              <th class="col-md-2 col-sm-6"><a class="btn btn-sunny" href="{{ post.url }}">EASY</button></th>
+                                          {% elsif lev == "hard" %}
+                                              <th class="col-md-2 col-sm-6"><a class="btn btn-hot" href="{{ post.url }}">HARD</button></th>
+                                          {% else %}
+                                              <th class="col-md-2 col-sm-6"><a class="btn btn-sky" href="{{ post.url }}">MEDIUM</button></th>
+                                          {% endif %}
+                                      {% endfor %}
+                                  {% endif %}
+                                  {% for ele in post.block %}
+                                      {% if ele == "yes" %}
+                                          <th class="col-md-2 col-sm-6"><a class="btn btn-hot" href="{{ post.url }}"> &nbsp; ?</button></th>
+                                      {% endif%}
+                                  {% endfor %}
+                                  {% if post.block == nil %}
+                                      <th class="col-md-2 col-sm-6"><a class="btn btn-success" href="{{ post.url }}"><span class="glyphicon glyphicon-ok"></span> &nbsp; ACCEPTED</button></th>
+                                  {% endif %}
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                  {% endfor %}
+                  <tr>
+                    <th class="col-md-1 col-sm-1" scope="row">{% increment counter %}</th>
+                    <th class="col-md-7 col-sm-11">To be continued ... </a></th>
+                    <th class="col-md-2 col-sm-6"> </th>
+                    <th class="col-md-2 col-sm-6"> </th>
+                  </tr>
+              </tbody>
+            </table>
+        </div>
+    </div>
+</div>
