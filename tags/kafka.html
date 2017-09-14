@@ -14,7 +14,7 @@ title: "block"
 {% if category[0] == "kafka" %}
 {% for posts in category %}
 {% for post in posts %}
-{% if post != "block" %}
+{% if post != "kafka" %}
 {% include post-info-without-comment.html %}{% endif %}
 {% endfor %}
 {% endfor %}
