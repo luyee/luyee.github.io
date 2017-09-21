@@ -1,3 +1,14 @@
+---
+layout: post
+title: "Kudu QuickStart"
+author: "Lu Yee"
+date: 2017-09-21 11:14:32
+categories: ["kudu"]
+tags: ["kudu"]
+description: >
+  Kudu QuickStart
+---
+
 
 准备数据
 
