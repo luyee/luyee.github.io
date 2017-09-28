@@ -3,8 +3,8 @@ layout: post
 title: "Mysql binlog to Kudu by Streamsets"
 author: "Lu Yee"
 date: 2017-09-28 12:55:32
-categories: ["kudu","streamsets"]
-tags: ["kudu","streamsets"]
+categories: ["kudu","streamset"]
+tags: ["kudu","streamset"]
 description: >
   Mysql binlog to Kudu by Streamsets
 ---
