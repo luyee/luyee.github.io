@@ -43,6 +43,6 @@ nohup bin/streamsets dc &
      注意配置Field to Column Mapping ，这里的SDC Field必须是[数字]或者“/”开头   
      还有是如果是“/”开头，源表包含字段ID,X,y, SDC Field的格式为/Data/ID,/Data/X,/Data/y.
      
-     ![Record](images/record.png)
+     ![Record](/images/record.png)
 
 
