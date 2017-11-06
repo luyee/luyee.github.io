@@ -28,3 +28,10 @@ mysqldump -p   -u  -hip -Pport --databases table_a table_b table_c  --skip-lock-
 ```
 mysqldump  -p  -u  -hip   -P3322 --single-transaction --flush-logs --master-data=2 dbname  tbname  --skip-lock-tables >xxx.sql
 ```
+
+
+导入
+
+```
+ nohup mysql  -u -p -P3331 </tmp/3322_db.sql  >log.log & 2>&1 
+```
