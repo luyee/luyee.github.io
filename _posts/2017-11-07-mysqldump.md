@@ -33,5 +33,6 @@ mysqldump  -p  -u  -hip   -P3322 --single-transaction --flush-logs --master-data
 导入
 
 ```
- nohup mysql  -u -p -P3331 </tmp/3322_db.sql  >log.log & 2>&1 
+ nohup mysql  -u -p -P3331 </tmp/3322_db.sql  >log.log & 2>&1  &
 ```
+
