@@ -26,7 +26,7 @@ mysqldump -p   -u  -hip -Pport --databases table_a table_b table_c  --skip-lock-
 导出带有binlog position的文件(--single-transaction --flush-logs --master-data=2)
 
 ```
-mysqldump  -p  -u  -hip   -P3322 --single-transaction --flush-logs --master-data=2 dbname  tbname  --skip-lock-tables >xxx.sql
+mysqldump  -p  -u  -hip   -P3322 --single-transaction --flush-logs --master-data=2 dbname  tbname >xxx.sql
 ```
 
 
