@@ -38,7 +38,7 @@ mysqldump  -p  -u  -hip   -P3322 --single-transaction --flush-logs --master-data
 
 ### mysqldump 文件简单分割！
 
-grep -n找到相应数据库或者表的sql 语句的行
+grep -n找到相应数据库或者表( )的sql 语句的行
 ```
 grep -n 'USE `agreement`' 3322_db.sql   
 ```
