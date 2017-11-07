@@ -38,9 +38,10 @@ mysqldump  -p  -u  -hip   -P3322 --single-transaction --flush-logs --master-data
 
 ### mysqldump 文件简单分割！
 
-grep -n找到相应数据库或者表( )的sql 语句的行
+grep -n找到相应数据库或者表(按库或者表的粒度)的sql 语句的行
 ```
-grep -n 'USE `agreement`' 3322_db.sql   
+grep -n 'USE `agreement`' 3322_db.sql
+grep -n  'DROP TABLE IF EXISTS `sub_account_log`' account.sql  
 ```
 awk从指定行分割文件(假设4433行)
 
