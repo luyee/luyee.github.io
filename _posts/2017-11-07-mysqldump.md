@@ -50,4 +50,19 @@ nohup awk '{if (NR<4433) print $0 >"account1.sqll";if (NR>=4433) print $0>"accou
 ```
 
 
+### sql 日期函数
+
+Date函数
+
+```
+select * from t_borrower_repay where date(pay_date) >= date('2017-08-01') and date(pay_date)<date('2017-12-07')  and date(data_date) =date('2017-11-06')
+```
+
+unix_timestamp函数
+
+```
+select * from t_borrower_repay where unix_timestamp(pay_date) >= unix_timestamp('2017-08-01') and unix_timestamp(pay_date)<unix_timestamp('2017-12-07')  and unix_timestamp(data_date) =unix_timestamp('2017-11-06')
+```
+
+
 
