@@ -65,4 +65,19 @@ select * from t_borrower_repay where unix_timestamp(pay_date) >= unix_timestamp(
 ```
 
 
+### sql
+
+增加字段到指定字段之后
+
+```
+ alter table table add column  `update_time` timestamp NULL DEFAULT '2017-11-23 00:00:00' COMMENT '更新时间' after create_time;
+```
+
+调整已有字段的顺序
+
+```
+alter table table CHANGE created_time `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时 间' after modified_time;
+```
+
+
 
