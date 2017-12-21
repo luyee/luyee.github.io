@@ -170,3 +170,33 @@ mysql> select * from test_on_duplicate_key;                                     
 ```
 
 ## REPLACE INTO
+
+replace into 多个唯一性key表现是多行都会update,与ON DUPLICATE KEY UPDATE差异很大
+
+```
+mysql> select * from test_two_uni;
++----+------+----------+
+| id | a    | b        |
++----+------+----------+
+|  1 | 1    | abc      |
+|  3 | 2    | abc      |
+|  9 | 3    | abcfffff |
+|  6 | 5    | abc      |
++----+------+----------+
+4 rows in set (0.00 sec)
+
+mysql> 
+mysql> 
+mysql> replace into test_two_uni(id,a,b)values(9,5,"kkkkkk");
+Query OK, 3 rows affected (0.01 sec)
+
+mysql> select * from test_two_uni;
++----+------+--------+
+| id | a    | b      |
++----+------+--------+
+|  1 | 1    | abc    |
+|  3 | 2    | abc    |
+|  9 | 5    | kkkkkk |
++----+------+--------+
+3 rows in set (0.00 sec)
+```
