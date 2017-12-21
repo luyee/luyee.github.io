@@ -118,5 +118,55 @@ ERROR 1062 (23000): Duplicate entry '8' for key 'kk_uq'
 mysql> 
 
 ```
+### ON DUPLICATE KEY UPDATE  多个唯一性key
+
+假设a,b两个字段都是唯一性索引，相当于UPDATE t1 SET c=c+1 WHERE a=1 OR b=2 LIMIT 1;只有一条会被更新
+```
+CREATE TABLE `test_on_duplicate_key` (
+  `id` int(50) NOT NULL AUTO_INCREMENT,
+  `a` varchar(30) DEFAULT NULL,
+  `b` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `kk_uq` (`a`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+
+mysql> desc test_on_duplicate_key;
++-------+-------------+------+------+---------+----------------+
+| Field | Type        | Null | Key  | Default | Extra          |
++-------+-------------+------+------+---------+----------------+
+| id    | int(50)     | NO   | PRI  | NULL    | auto_increment |
+| a     | varchar(30) | YES  | UNI  | NULL    |                |
+| b     | varchar(30) | YES  |      | NULL    |                |
++-------+-------------+------+------+---------+----------------+
+3 rows in set (0.00 sec)
+mysql>
+mysql> select * from test_on_duplicate_key;
++----+------+---------+
+| id | a    | b       |
++----+------+---------+
+|  1 | 7    | gggggg  |
+|  3 | 2    | abcffff |
+|  4 | 8    | abc     |
+|  6 | 10   | abc     |
+|  9 | 5    | kkkk    |
++----+------+---------+
+5 rows in set (0.00 sec)
+mysql> 
+//注意
+这里只有id=3的列被更新了
+mysql> insert into test_on_duplicate_key(id,a,b)values(3,7,'abcffffdddddd') ON DUPLICATE KEY UPDATE b=VALUES(b);
+Query OK, 2 rows affected (0.01 sec)
+mysql> 
+mysql> select * from test_on_duplicate_key;                                     +----+------+---------------+
+| id | a    | b             |
++----+------+---------------+
+|  1 | 7    | gggggg        |
+|  3 | 2    | abcffffdddddd |
+|  4 | 8    | abc           |
+|  6 | 10   | abc           |
+|  9 | 5    | kkkk          |
++----+------+---------------+
+5 rows in set (0.00 sec)
+```
 
 ## REPLACE INTO
