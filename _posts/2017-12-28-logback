@@ -1,0 +1,170 @@
+---
+layout: post
+title: "Logback.xml不能生成文件"
+author: "luyee"
+date: 2017-09-12 10:28:32
+categories: ["java"]
+tags: ["java"]
+description: >
+  Java  Date
+---
+
+发现项目通过参数-Dlogback.configurationFile=$logback_configurationFile指定了logback.xml后,
+
+一直无法生成log文件， 发现配置路径都正常，想到的只有jar包冲突了，一一排除掉,最后的pom.xml
+
+```
+	<dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>jcl-over-slf4j</artifactId>
+	    <version>1.7.25</version>
+	</dependency> 
+
+	
+	<dependency>  
+	    <groupId>org.slf4j</groupId>  
+	    <artifactId>slf4j-api</artifactId>  
+	    <version>1.6.0</version>  
+	    <type>jar</type>  
+	    <scope>compile</scope>  
+	</dependency>  
+	<dependency>  
+	    <groupId>ch.qos.logback</groupId>  
+	    <artifactId>logback-core</artifactId>  
+	    <version>0.9.28</version>  
+	    <type>jar</type>  
+	</dependency>  
+	<dependency>  
+	    <groupId>ch.qos.logback</groupId>  
+	    <artifactId>logback-classic</artifactId>  
+	    <version>0.9.28</version>  
+	    <type>jar</type>  
+	</dependency>  
+```
+项目中使用到了spring-core, 在spring-core中依赖的commons-logging,这个用必须排除掉，导入jcl-over-slf4j
+
+```
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>jcl-over-slf4j</artifactId>
+    <version>1.7.25</version>
+</dependency> 
+```
+
+
+最后给一个按级别输出到不同文件的配置logback.xml
+
+```
+<?xml version="1.0" encoding="UTF-8"?>  
+<configuration>  
+    <!-- 定义log 文件的 home 目录  -->
+    <property name="LOG_HOME"  value="../logs"></property>
+    <property name="APP_NAME"  value="datastream"></property>
+ 
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">  
+        <encoder>  
+            <!-- %.-1level 只显示信息级别的首字母,%-5level 左对齐显示信息级别全称 -->  
+            
+            <Pattern>[%date{yyyy-MM-dd HH:mm:ss}] [%-5level] --%mdc{client} %msg%n</Pattern>  
+        </encoder>  
+    </appender>  
+    
+    <appender name="TRACE_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">  
+        <encoding>UTF-8</encoding>
+        <file>${LOG_HOME}/${APP_NAME}_trace.log</file>  
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
+            <FileNamePattern>../logs/${APP_NAME}_trace.%d{yyyy-MM-dd}.log</FileNamePattern>  
+        </rollingPolicy>  
+        <layout>  
+            <pattern>[%date{yyyy-MM-dd HH:mm:ss}] [%-5level] [%logger:%line] --%mdc{client} %msg%n</pattern>  
+        </layout> 
+       <!--  <filter class="ch.qos.logback.classic.filter.LevelFilter"> 
+            <level>TRACE</level>  
+            <onMatch>ACCEPT</onMatch>  
+            <onMismatch>DENY</onMismatch>  
+           </filter>  --> 
+    </appender>  
+    
+     <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">  
+        <encoding>UTF-8</encoding>
+        <file>${LOG_HOME}/${APP_NAME}_info.log</file>  
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
+            <FileNamePattern>../logs/${APP_NAME}_info.%d{yyyy-MM-dd}.log</FileNamePattern>  
+        </rollingPolicy>  
+        <layout>  
+            <pattern>[%date{yyyy-MM-dd HH:mm:ss}] [%-5level] [%logger:%line] --%mdc{client} %msg%n</pattern>  
+        </layout>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter"> 
+            <level>INFO</level>  
+            <onMatch>ACCEPT</onMatch>  
+            <onMismatch>DENY</onMismatch>  
+           </filter>     
+    </appender>  
+    
+      <appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">  
+        <encoding>UTF-8</encoding>
+        <file>${LOG_HOME}/${APP_NAME}_debug.log</file>  
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
+            <FileNamePattern>../logs/${APP_NAME}_debug.%d{yyyy-MM-dd}.log</FileNamePattern>  
+        </rollingPolicy>  
+        <layout>  
+            <pattern>[%date{yyyy-MM-dd HH:mm:ss}] [%-5level] [%logger:%line] --%mdc{client} %msg%n</pattern>  
+        </layout> 
+         <filter class="ch.qos.logback.classic.filter.LevelFilter"> 
+            <level>DEBUG</level>  
+            <onMatch>ACCEPT</onMatch>  
+            <onMismatch>DENY</onMismatch>  
+           </filter>   
+    </appender>  
+    
+    
+     <appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">  
+        <encoding>UTF-8</encoding>
+        <file>${LOG_HOME}/${APP_NAME}_warn.log</file>  
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
+            <FileNamePattern>../logs/${APP_NAME}_warn.%d{yyyy-MM-dd}.log</FileNamePattern>  
+        </rollingPolicy>  
+        <layout>  
+            <pattern>[%date{yyyy-MM-dd HH:mm:ss}] [%-5level] [%logger:%line] --%mdc{client} %msg%n</pattern>  
+        </layout> 
+         <filter class="ch.qos.logback.classic.filter.LevelFilter"> 
+            <level>WARN</level>  
+            <onMatch>ACCEPT</onMatch>  
+            <onMismatch>DENY</onMismatch>  
+           </filter>   
+    </appender>  
+    
+    
+    
+     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">  
+        <encoding>UTF-8</encoding>
+        <file>${LOG_HOME}/${APP_NAME}_error.log</file>  
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
+            <FileNamePattern>../logs/${APP_NAME}_error.%d{yyyy-MM-dd}.log</FileNamePattern>  
+        </rollingPolicy>  
+        <layout>  
+            <pattern>[%date{yyyy-MM-dd HH:mm:ss}] [%-5level] [%logger:%line] --%mdc{client} %msg%n</pattern>  
+        </layout> 
+         <filter class="ch.qos.logback.classic.filter.LevelFilter"> 
+            <level>ERROR</level>  
+            <onMatch>ACCEPT</onMatch>  
+            <onMismatch>DENY</onMismatch>  
+           </filter>   
+    </appender>  
+ <!-- 
+	<logger name="com.alibaba.otter.manager.web.home.module.action.PositionAction" additivity="false">  
+        <level value="info" />  
+        <appender-ref ref="position" />
+    </logger>
+     -->    
+    <root level="INFO">  
+        <appender-ref ref="STDOUT"/>  
+        <appender-ref ref="TRACE_FILE" />
+           <appender-ref ref="INFO_FILE" />  
+          <appender-ref ref="DEBUG_FILE" />  
+         <appender-ref ref="WARN_FILE" />  
+          <appender-ref ref="ERROR_FILE" />    
+    </root>  
+    
+</configuration>  
+```
