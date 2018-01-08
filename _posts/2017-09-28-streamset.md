@@ -18,8 +18,11 @@ cd  streamsets-datacollector-2.6.0.1
 
 ### mysql jar包
 
+这里注意包的路径是需要的包放在 streamsets-libs/streamsets-datacollector-xxx-lib/lib下
+
 ```
 cp mysql-connector-java-5.1.40.jar streamsets-libs/streamsets-datacollector-mysql-binlog-lib/lib/
+cp mysql-connector-java-5.1.40.jar streamsets-libs/streamsets-datacollector-jdbc-lib/lib/
 ```
 
 ### 启动
