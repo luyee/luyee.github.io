@@ -46,3 +46,22 @@ rowBatch.setIdentity(identity);
 
 关键看这个ProcessId
 
+MemoryStageController中生成ProcessId,这个atomicMaxProcessId是一个AtomicLong
+
+```
+private synchronized void initSelect() {
+  // 第一次/出现ROLLBACK/RESTART事件，删除了所有调度信号后，重新初始化一下select
+  // stage的数据，初始大小为并行度大小
+  // 后续的select的reply队列变化，由load single时直接添加
+  try{
+  ReplyProcessQueue queue = replys.get(StageType.SELECT);
+  int parallelism = ArbitrateConfigUtils.getParallelism(getPipelineId());
+  while (parallelism-- > 0 && queue.size() <= parallelism) {
+    queue.offer(atomicMaxProcessId.incrementAndGet());
+  }
+  } catch (ExecutionException e) {
+    e.printStackTrace();
+  }
+}
+```
+
