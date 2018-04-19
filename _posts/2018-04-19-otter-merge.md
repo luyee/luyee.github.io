@@ -58,7 +58,7 @@ insert 涉及到下面几种情况
 1. insert + insert -> insert (数据迁移+数据增量场景)
 2. insert + update -> insert  (update字段合并到insert)
 3. insert + delete -> delete 
-9. delete + delete -> delete
+7. delete + insert -> insert 
 ```
 下面看下源码
 ```
