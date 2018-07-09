@@ -2,7 +2,6 @@
 layout: post
 title: "Exactly-once Kafka Dynamic Consumer via Subscribe"
 author: "Lu Yee"
-date: 2018-07-08 10:28:32
 categories: ["kafka"]
 tags: ["java","kafka"]
 description: >
