@@ -72,6 +72,17 @@ select * from t_borrower_repay where unix_timestamp(pay_date) >= unix_timestamp(
 ```
  alter table table add column  `update_time` timestamp NULL DEFAULT '2017-11-23 00:00:00' COMMENT '更新时间' after create_time;
 ```
+增加多个字段到指定字段之后
+
+```
+alter table  t_apply_work_info 
+ADD COLUMN  `company_revenue` varchar(50) DEFAULT NULL COMMENT '经营流水（万元）' after `max_salary`,
+ADD COLUMN  `occupation` int(11) DEFAULT '0' COMMENT '职业 1 学生 2 工薪 3 老板 4 农民' after `company_revenue`,
+ADD COLUMN  `business_term` varchar(10) DEFAULT NULL COMMENT '经营年限' after `occupation`,
+ADD COLUMN  `is_social_security` int(2) DEFAULT NULL COMMENT '现单位是否缴纳社保 after `business_term`',
+ADD COLUMN  `working_years` int(2) DEFAULT NULL COMMENT '1 3个月以内 ，2 3-6个月，3 6-12个月 ，4 12月以上' after `is_social_security` ;
+```
+
 
 调整已有字段的顺序
 
