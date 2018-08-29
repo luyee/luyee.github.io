@@ -95,4 +95,6 @@ public class OffsetManager {
 link:   
 [Exactly-once Kafka Dynamic Consumer via Subscribe](https://dzone.com/articles/kafka-clients-at-most-once-at-least-once-exactly-o)
 
-[ExactlyOncePersonConsumer](https://github.com/luyee/KafkaExample/blob/master/src/main/java/com/gmail/alexandrtalan/kafka/consumers/ExactlyOncePersonConsumer.java)
+[ExactlyOncePersonConsumer](https://github.com/luyee/KafkaExample/blob/master/src/main/java/com/gmail/alexandrtalan/kafka/consumers/ExactlyOncePersonConsumer.java)   
+
+[Exactly-once using idempotent writes&using transactional writes](https://github.com/koeninger/kafka-exactly-once)
