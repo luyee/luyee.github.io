@@ -83,10 +83,13 @@ public CanalRemoteServiceImpl(){
 
 CommunicationClient是客户端的接口，默认实现DefaultCommunicationClientImpl，DefaultCommunicationClientImpl内部才是调用的是CommunicationConnection的
 
-canal服务的client实现
-
+canal服务为例跟踪下调用流程
+客户端调用：
 ```
 Canal canal = canalConfigClient.findCanal(destination);
+```
+canalConfigClient中的findCanal()
+```
 //canalConfigClient.java
 public Canal findCanal(String destination) {
 FindCanalEvent event = new FindCanalEvent();
@@ -101,6 +104,9 @@ try {
 } catch (Exception e) {
     throw new CanalException("call_manager_error", e);
 }
+```
+CanalCommmunicationClient
+```
 //CanalCommmunicationClient
 public Object callManager(final Event event) {
     CommunicationException ex = null;
@@ -119,6 +125,10 @@ public Object callManager(final Event event) {
 
     throw ex; // 走到这一步，说明肯定有出错了
 }
+```
+DefaultCommunicationClientImpl才会创建连接，远程通信
+
+```
 //DefaultCommunicationClientImpl
 public Object call(final String addr, final Event event) {
     Assert.notNull(this.factory, "No factory specified");
@@ -148,11 +158,18 @@ public Object call(final String addr, final Event event) {
     logger.error("call[{}] failed , event[{}]!", addr, event.toString());
     throw new CommunicationException("call[" + addr + "] , Event[" + event.toString() + "]", ex);
 }
+```
+DubboCommunicationConnection包装了endpoint
+
+```
 //DubboCommunicationConnection
 public Object call(Event event) {
     // 调用rmi传递数据到目标server上
     return endpoint.acceptEvent(event);
 }
+```
+AbstractCommunicationEndpoint中查找服务与对应的事件，通过反射调用服务
+```
 //AbstractCommunicationEndpoint
 public Object acceptEvent(Event event) {
     if (event instanceof HeartEvent) {
