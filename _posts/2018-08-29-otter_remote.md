@@ -219,4 +219,12 @@ public Object acceptEvent(Event event) {
 }
 }
 ```
+实现的remote服务实现，命名一般为xxxRemoteServiceImpl，内部是通常的javabean服务
+如：CanalRemoteServiceImpl
 
+```
+public Canal onFindCanal(FindCanalEvent event) {
+    String destination = event.getDestination();
+    return canalService.findByName(destination);
+}
+```
